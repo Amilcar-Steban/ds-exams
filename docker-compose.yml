@@ -1,0 +1,30 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - consul_network
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_HOST=consul
+      - NGINX_IP=nginx
+
+  consul:
+    build:
+      context: ./consul
+      dockerfile: Dockerfile
+    ports:
+      - "8500:8500"
+      - "8600:8600"
+    networks:
+      - consul_network
+    
+
+networks:
+  consul_network:
+    driver: bridge

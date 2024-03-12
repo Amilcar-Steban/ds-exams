@@ -14,6 +14,6 @@ serviceEndpoints:
   files:
     url: 'http://load_balancer'
   health:
-    url: 'http://registry_discovery/health'
+    url: 'http://consul/health'
 policies:
   - cors
