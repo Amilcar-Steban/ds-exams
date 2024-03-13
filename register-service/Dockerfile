@@ -7,6 +7,8 @@ RUN apk --no-cache add curl
 # Copy the entrypoint script into the container
 COPY entrypoint.sh /entrypoint.sh
 
+COPY register-service.sh /register-service.sh
+
 # Set the entrypoint script as executable
 RUN chmod +x /entrypoint.sh
 

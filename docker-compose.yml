@@ -5,14 +5,14 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:8080"
     networks:
       - consul_network
     depends_on:
       - consul
     environment:
       - CONSUL_HOST=consul
-      - NGINX_IP=nginx
+      - NGINX_IP=frontend
 
   consul:
     build:
@@ -34,6 +34,18 @@ services:
       - consul
     environment:
       - CONSUL_HOST=consul
+  
+  haproxy:
+    build:
+      context: ./load_balancer
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - consul_network
+    depends_on:
+      - frontend
+      - consul
 
 networks:
   consul_network:

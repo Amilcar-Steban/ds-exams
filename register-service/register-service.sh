@@ -1,28 +1,27 @@
 #!/bin/sh
 
-# Dirección IP del contenedor actual
-CONTAINER_IP=$(hostname -i)
+NGINX_IP="frontend"
 
 # Dirección IP del servicio de Consul
 CONSUL_HOST="consul"
 
 # Puerto en el que el servicio está escuchando
-SERVICE_PORT=80
+SERVICE_PORT=8080
 
-# URL de la verificación de salud del servicio
-HEALTH_CHECK_URL="http://localhost:${SERVICE_PORT}/health"
+curl 'frontend:8080/'
 
 # Registro del servicio en Consul
-curl --request PUT \
-  --data '{
-    "ID": "nginx-service",
-    "Name": "nginx",
-    "Tags": ["web"],
-    "Address": "'"$CONTAINER_IP"'",
-    "Port": '"$SERVICE_PORT"',
-    "Check": {
-      "HTTP": "'"$HEALTH_CHECK_URL"'",
-      "Interval": "10s"
-    }
-  }' \
-  http://$CONSUL_HOST:8500/v1/agent/service/register
+curl --request PUT --data \
+'{
+  "ID": "nginx-service",
+  "Name": "nginx",
+  "Tags": ["web"],
+  "Address": "frontend",
+  "Port": 80,
+  "Check": {
+    "HTTP": "http://frontend:8080/health",
+    "Interval": "10s"
+  }
+}' \
+http://consul:8500/v1/agent/service/register
+

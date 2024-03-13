@@ -11,7 +11,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /usr/share/nginx/html/index.html
 COPY styles.css /usr/share/nginx/html/
 # Expone el puerto 80
-EXPOSE 80
+EXPOSE 8080
 
 # Inicia Nginx
 CMD ["nginx", "-g", "daemon off;"]
